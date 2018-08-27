@@ -2,10 +2,6 @@
 #define PID_H
 #include <vector>
 
-#define TWIDDLE_PROCESSING 1
-#define TWIDDLE_END 0
-#define ERROR_AT_BEGIN 1000
-
 class PID {
 public:
   /*
@@ -15,6 +11,7 @@ public:
   double i_error;
   double d_error;
 
+  double prev_cte;
   /*
   * Coefficients
   */ 
@@ -25,14 +22,18 @@ public:
   /*
   * Twiddle
   */
-  double twiddle_p[3]= {0,0,0}; //P, I, D as params
-  double twiddle_dp[3] = {1,1,1}; //Differential params
-  int twiddle_step;
-  int max_twiddle_steps;
-  double error_after_twiddle; // represented by ^2 to deal with positive and negative error.
+  std::vector<double> dp;
+  int step, param_index;
+  int steps_twiddling, steps_evaluation;
+
+  double total_error_calculating;
   double total_error;
   double best_error;
 
+  //twiddle state flag:
+  bool adding_done_flag;
+  bool subtracting_done_flag;
+  bool twiddle_enable;
 
   /*
   * Constructor
@@ -62,7 +63,7 @@ public:
   /*
   * Twiddle
   */
-  int Twiddle_Process(double twiddle_tolerance = 0.2 );
+  void UpdateParams(int index, double param_value);
 
 
 };

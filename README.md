@@ -19,7 +19,7 @@ Self-Driving Car Engineer Nanodegree Program
   * Run either `./install-mac.sh` or `./install-ubuntu.sh`.
   * If you install from source, checkout to commit `e94b6e1`, i.e.
     ```
-    git clone https://github.com/uWebSockets/uWebSockets 
+    git clone https://github.com/uWebSockets/uWebSockets
     cd uWebSockets
     git checkout e94b6e1
     ```
@@ -33,7 +33,7 @@ There's an experimental patch for windows in this [PR](https://github.com/udacit
 1. Clone this repo.
 2. Make a build directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
-4. Run it: `./pid`. 
+4. Run it: `./pid`.
 
 Tips for setting up your environment can be found [here](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/f758c44c-5e40-4e01-93b5-1a82aa4e044f/concepts/23d376c7-0195-4276-bdf0-e02f1f3c665d)
 
@@ -58,6 +58,25 @@ cmake and make!
 More information is only accessible by people who are already enrolled in Term 2
 of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/f1820894-8322-4bb3-81aa-b26b3c6dcbaf/lessons/e8235395-22dd-4b87-88e0-d108c5e5bbf4/concepts/6a4d8d42-6a04-4aa6-b284-1697c0fd6562)
 for instructions and the project rubric.
+
+## Rubric points - Reflection
+#### Describe the effect each of the P, I, D components had in your implementation.
+
+- P component:
+  - The proportional portion will steer vehicle back towards the centre of the road. However it easily overshoots, and will drive the vehicle on "S" path and end outside of the road.
+  - An example can be seen at the recoded video: Video_PID_Controller_P (./video/Video_PID_Controller_P) with PID = [1,0,0];
+- I component：
+  -  The integral portion will compensate the bias of the system. In this case, the simulation has no bias involved. If we still set the integral portion, the vehicle will run along a circle.
+  - An example can be seen at the recoded video:Video_PID_Controller_I  (./video/Video_PID_Controller_I) with PID = [0,1,0];
+- D component：
+  - The differential portion will counteract the overshooting condition caused by P component, and try to control the vehicle to converge to the centre of the road smoothly.
+  - An example can be seen at the recoded video:  Video_PID_Controller_D (./video/Video_PID_Controller_D) with PID = [1,0,1];
+
+#### Describe how the final hyperparameters were chosen.
+The final hyper parameters were decided based on both manual tuning and twiddle algorithm. It started from manual tuning. Set parameters all to zero, and checked if the vehicle can go straight or not. The video showed it can. So estimated the I component will be very small or zero. To minimise the total error, then started to in crease P component, and modified D component accordingly to compensate overshooting. When the car would not go outside of the road, I used twiddle algorithm to even improve the performance, which was evaluated by total error.
+
+At last, the PID parameter was defined as [0.135, 0, 2.25]
+
 
 ## Hints!
 
@@ -95,4 +114,3 @@ still be compilable with cmake and make./
 
 ## How to write a README
 A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
-
